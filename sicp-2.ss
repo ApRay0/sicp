@@ -104,6 +104,207 @@
       (lambda (f)
 	(lambda(x)
 	  (m f (n f x)))))))
+;;2.17
+(define (last-pair x)
+  (cond ((null? x) '())
+	((null? (cdr x)) x)
+	(else (last-pair (cdr x)))))
+
+;;2.18
+(define (ex2.18 x)
+  (iter2.18 x '()))
+
+(define (iter2.18 remain res)
+  (if (null? remain) res
+    (iter2.18 (cdr remain) (cons (car remain) res))))
+
+
+;;2.20
+
+
+;;2.21
+(define (square-list items)
+  (if (null? items)
+    nil
+    (cons (square (car items))
+	  (square-list (cdr items)))))
+
+(define (square-list items)
+  (map square items))
+
+
+
+;;2.22
+(define (ex2.22 items)
+      (define (iter things answer)
+	        (if (null? things)
+		              answer
+			                  (iter (cdr things)
+						                  (cons answer
+									                        (square (car things))))))
+          (iter items '()))
+
+
+(define (square x)
+  (* x x))
+
+;;2.27
+(define (deep-reverse x)
+  (cond ((null? x) '())
+	((not (pair? x)) x)
+	(else (reverse (list (deep-reverse (car x))
+			     (deep-reverse (cdr x)))))))
+
+;;2.28
+(define (fringe x)
+  (cond ((null? x) '())
+	((not (pair? x)) x)
+	(else (append (fringe (car x)
+			      (cadr x))))))
+
+;;2.29
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch len structure)
+  (list len structure))
+
+(define (left-branch stru)
+  (car stru))
+
+(define (right-branch stru)
+  (cadr stru))
+
+(define (branch-length bran)
+  (car bran))
+
+(define (branch-structure bran)
+  (cadr bran))
+
+(define (total-weight mobile)
+  (+ (branch-weight (left-branch mobile))
+     (branch-weight (right-branch mobile))))
+
+(define (branch-weight branch)
+  (if (pair? (branch-structure branch))
+    (total-weight (branch-structure branch))
+    (branch-structure branch)))
+
+(define (mobile-balance? mobile)
+  (and (same-torque? (left-branch mobile) (right-branch mobile))
+       (branch-balance? (left-branch mobile))
+       (branch-balance? (right-branch mobile))))
+
+(define (branch-torque branch)
+  (* (branch-length branch)
+     (branch-weight branch)))
+
+(define (same-torque? left right)
+  (= (branch-torque left)
+     (branch-torque right)))
+
+(define (branch-balance? branch)
+  (if (pair? (branch-structure branch))
+    (mobile-balance? (branch-structure branch))
+    #t))
+
+;;2.30
+(define (square-tree tree)
+  (cond ((null? tree) '())
+	((not (pair? tree)) (square tree))
+	(else (cons (square-tree (car tree) factor)
+		    (square-tree (cdr tree) factor)))))
+
+(define (square-tree2 tree)
+  (map (lambda (sub-tree)
+	 (if (pair? sub-tree)
+	   (square-tree sub-tree)
+	   (square sub-tree)))
+       tree))
+
+
+;;2.31
+(define (tree-map func tree)
+  (map (lambda (sub-tree)
+	 (if (pair? sub-tree)
+	   (tree-map func sub-tree)
+	   (func sub-tree)))
+       tree))
+
+
+;;2.32
+(define (subsets s)
+  (if (null? s)
+    (list '())
+    (let ((rest (subsets (cdr s))))
+      (append rest (map lambda (x)
+			(cons (car s) x))
+	      rest))))
+
+;;2.34
+(define (horner-eval x coefficient-sequence)
+  (accumulate (lambda (this-coeff higher-terms)
+		(+ this-coeff (* higher-terms x)))
+	      0
+	      coefficient-sequence))
+
+
+;;2.35
+(define (count-leaves t)
+  (accumulate +
+	      0
+	      (map (lambda (sub-tree)
+		     (if (pair? sub-tree)
+		       (count-leaves sub-tree)
+		       1))
+		   t)))
+
+;;2.36
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
