@@ -260,7 +260,47 @@
 		   t)))
 
 ;;2.36
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+    '()
+    (cons (accumulate op init (car seqs))
+	  (accumulate-n op init (cdr seqs)))))
 
+;;2.37
+(define (matrix-*-vector m v)
+  (map (lambda (x)
+	 (dot-product x v))
+       m))
+
+(define (transpose mat)
+  (accumulate-n cons '() mat))
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (x)
+	   (matrix-*-vector  cols x))
+	 m)))
+
+;;----------------------------
+(define (accumulate op init seq)
+  (if (null? seq) init
+    (op (car seq)
+	(accumulate op init (cdr seq)))))
+
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+(define (prime-sum? pair)
+  (prime? (+ (car pair) (cadr pair))))
+
+(define (permutations s)
+  (if (null? s) '()
+    (flatmap (lambda (x)
+	       (map (lambda (p) (cons x p))
+		    (permutations (remove x s))))
+	     s)))
+
+;;2.40
 
 
 
